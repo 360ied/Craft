@@ -2025,6 +2025,7 @@ void parse_command(const char *buffer, int forward) {
     int server_port = DEFAULT_PORT;
     char filename[MAX_PATH_LENGTH];
     int radius, count, xc, yc, zc;
+    int vsync;
     if (sscanf(buffer, "/identity %128s %128s", username, token) == 2) {
         db_auth_set(username, token);
         add_message("Successfully imported identity token!");
@@ -2122,6 +2123,12 @@ void parse_command(const char *buffer, int forward) {
     }
     else if (sscanf(buffer, "/cylinder %d", &radius) == 1) {
         cylinder(&g->block0, &g->block1, radius, 0);
+    }
+    else if (sscanf(buffer, "/vsync %d", &vsync) == 1) {
+        glfwSwapInterval(vsync);
+        char buf[32];
+        snprintf(buf, sizeof(buf), "vsync set to %d", vsync);
+        add_message(buf);
     }
     else if (forward) {
         client_talk(buffer);
