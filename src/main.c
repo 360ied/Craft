@@ -2857,13 +2857,14 @@ int main(int argc, char **argv) {
             float tx = ts / 2;
             float ty = g->height - ts;
             if (SHOW_INFO_TEXT) {
-                int hour = time_of_day() * 24;
+                float hour = time_of_day() * 24;
+                int minutes = fmod(hour, 1.0f) * 60;
                 snprintf(
                     text_buffer, 1024,
-                    "(%d, %d) (%.2f, %.2f, %.2f) [%d, %d, %d] %d %dfps",
+                    "(%d, %d) (%.2f, %.2f, %.2f) [%d, %d, %d] %02d:%02d %dfps",
                     chunked(s->x), chunked(s->z), s->x, s->y, s->z,
                     g->player_count, g->chunk_count,
-                    face_count * 2, hour, fps.fps);
+                    face_count * 2, (int)hour, minutes, fps.fps);
                 render_text(&text_attrib, ALIGN_LEFT, tx, ty, ts, text_buffer);
                 ty -= ts * 2;
             }
